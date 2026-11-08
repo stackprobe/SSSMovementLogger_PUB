@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp" android:height="108dp"
+    android:viewportWidth="108" android:viewportHeight="108">
+  <!-- A sleepy face, messy hair and laptop remain legible with themed icons. -->
+  <path android:fillColor="#FFFFFFFF" android:fillType="evenOdd"
+      android:pathData="M35,31 C32,19 45,18 49,24 C67,21 77,32 76,46 L81,53 L75,53 L77,62 L69,60 C65,66 43,66 38,60 L30,64 L32,54 L27,54 L32,45 C30,39 32,34 35,31 Z M38,39 C38,53 40,60 54,61 C67,60 70,51 69,40 L60,34 L58,44 L52,36 L49,46 L46,37 Z" />
+  <path android:fillColor="#FFFFFFFF" android:strokeColor="#FFFFFFFF" android:strokeWidth="2"
+      android:strokeLineCap="round" android:pathData="M43,49 L49,50 M59,50 L65,49 M52,56 L56,56" />
+  <path android:fillColor="#FFFFFFFF" android:fillType="evenOdd"
+      android:pathData="M36,64 L72,64 Q75,64 74,68 L70,81 L38,81 L34,68 Q33,64 36,64 Z M39,68 L42,77 L66,77 L69,68 Z M34,82 L74,82 L77,85 L31,85 Z" />
+</vector>

@@ -1,0 +1,57 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net9.0-android35.0</TargetFramework>
+    <SupportedOSPlatformVersion>31.0</SupportedOSPlatformVersion>
+    <OutputType>Exe</OutputType>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <ApplicationId>net.sss.movementlogger</ApplicationId>
+    <ApplicationVersion>9</ApplicationVersion>
+    <ApplicationDisplayVersion>0.6.0</ApplicationDisplayVersion>
+    <RuntimeIdentifiers>android-arm64</RuntimeIdentifiers>
+    <AndroidPackageFormats>apk</AndroidPackageFormats>
+    <AndroidUseAssemblyStore>true</AndroidUseAssemblyStore>
+    <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Xamarin.GooglePlayServices.Location" Version="121.3.0.7" />
+    <AssemblyMetadata Include="BuildTimestampUtc" Value="$([System.DateTime]::UtcNow.ToString('O'))" />
+  </ItemGroup>
+  <!-- Give the distributable APK a stable project-based name, independently of the application ID. -->
+  <Target Name="CopyNamedApk" AfterTargets="Build;SignAndroidPackage;Publish"
+          Condition="'$(DesignTimeBuild)' != 'true' And '$(ApkFileSigned)' != '' And Exists('$(ApkFileSigned)')">
+    <Copy SourceFiles="$(ApkFileSigned)" DestinationFiles="$(OutDir)SSSMovementLogger-Signed.apk"
+          SkipUnchangedFiles="true" />
+    <ItemGroup>
+      <FileWrites Include="$(OutDir)SSSMovementLogger-Signed.apk" />
+    </ItemGroup>
+  </Target>
+  <!-- Bootstrap tooling before the normal SDK / JDK validation runs. -->
+  <Target Name="InstallLoggerBuildTools">
+    <Error Condition="'$(EnableLLVM)' == 'true'" Text="LLVM builds require NDK installation; this bootstrap supports the default non-LLVM build." />
+    <ItemGroup>
+      <_LoggerAndroidDependency Include="platforms/$(AndroidSdkPlatformVersion)" />
+      <_LoggerAndroidDependency Include="build-tools/$(AndroidSdkBuildToolsVersion)">
+        <Version>$(AndroidSdkBuildToolsVersion)</Version>
+      </_LoggerAndroidDependency>
+      <_LoggerAndroidDependency Include="platform-tools">
+        <Version>$(AndroidSdkPlatformToolsVersion)</Version>
+      </_LoggerAndroidDependency>
+      <_LoggerAndroidDependency Include="cmdline-tools/$(AndroidCommandLineToolsVersion)">
+        <Version>$(AndroidCommandLineToolsVersion)</Version>
+      </_LoggerAndroidDependency>
+      <_LoggerJavaDependency Include="jdk">
+        <Version>$(JavaSdkVersion)</Version>
+      </_LoggerJavaDependency>
+    </ItemGroup>
+    <InstallAndroidDependencies
+        Dependencies="@(_LoggerAndroidDependency)"
+        JavaDependencies="@(_LoggerJavaDependency)"
+        AndroidSdkPath="$(AndroidSdkDirectory)"
+        JavaSdkPath="$(JavaSdkDirectory)"
+        AcceptAndroidSDKLicenses="$(AcceptAndroidSDKLicenses)"
+        ManifestType="$(AndroidManifestType)"
+        TimeoutInMinutes="$(AndroidDependencyInstallationTimeout)"
+        InstallJavaDependencies="true" />
+  </Target>
+</Project>

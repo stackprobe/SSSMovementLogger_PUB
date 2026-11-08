@@ -13,3 +13,9 @@ tmp/
 # C-Language
 *.exe
 *.obj
+
+# Local Android SDK / JDK cache
+.build-tools/
+
+# Local dotnet verification state
+.dotnet-home/
